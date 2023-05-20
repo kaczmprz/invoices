@@ -1,6 +1,18 @@
 <html>
   <head><head>
   <body>
-    <h1>  WELCOME </h1>
+    <h1>  WELCOME on {{ site }}</h1>
+
+    {% if list %}
+    <ul>
+    {% for item in list %}
+        <li><a href="/customer/{{ item.id }}/">{{ item.first_name }} {{ item.last_name }}</a></li>
+    {% endfor %}
+    </ul>
+    {% else %}
+        <p>No items are available.</p>
+    {% endif %}
+
+
   <body>
 </html>
