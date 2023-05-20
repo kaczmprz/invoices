@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.template import loader
-from django.http import HttpResponse
+from django.http import Http404
 from .models import Customer, Material, Company
+from .forms import CustomerForm
 
 # Create your views here.
 def index(request):
@@ -17,6 +18,15 @@ def customer(request):
         'list': customer_list
     }
     return render(request, 'index.html', context)
+
+def customer_detail(request, id):
+    _customer = Customer.objects.get(id=id)
+    form = CustomerForm(instance=_customer)
+    context = {
+        'site': 'customer',
+        'form': form
+    }
+    return render(request, 'detail.html', context)
 
 def material(request):
     context = {
