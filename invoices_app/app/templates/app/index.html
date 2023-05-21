@@ -1,0 +1,14 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<h1>  WELCOME on {{ site }}</h1>
+{% if list %}
+<ul>
+{% for item in list %}
+  <li><a href="{% url 'app:customer_detail' item.id %}">{{ item.first_name }} {{ item.last_name }}</a></li>
+{% endfor %}
+</ul>
+{% else %}
+  <p>No items are available.</p>
+{% endif %}
+{% endblock %}

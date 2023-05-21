@@ -1,0 +1,14 @@
+{% load static %}
+
+<html>
+    <head><title>Fakturkowo</title></head>
+    <link rel="stylesheet" href="{% static 'app/styles.css' %}" />
+    <body>
+    <li><a href="{% url 'app:customer' %}">Customers</a></li>
+    <li><a href="{% url 'app:material' %}">Materials</a></li>
+    <li><a href="{% url 'app:company' %}">Companies</a></li>
+    <li><a href="{% url 'app:invoice' %}">Invoices</a></li>
+        {% block content %}{% endblock %}
+
+    </body>
+</html>

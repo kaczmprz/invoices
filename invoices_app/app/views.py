@@ -9,7 +9,7 @@ def index(request):
     context = {
         'site': 'home'
     }
-    return render(request, 'index.html', context)
+    return render(request, 'app/index.html', context)
 
 def customer(request):
     customer_list = Customer.objects.order_by("-last_name")[:5]
@@ -17,7 +17,7 @@ def customer(request):
         'site': 'customer',
         'list': customer_list
     }
-    return render(request, 'index.html', context)
+    return render(request, 'app/index.html', context)
 
 def customer_detail(request, id):
     _customer = Customer.objects.get(id=id)
@@ -26,22 +26,22 @@ def customer_detail(request, id):
         'site': 'customer',
         'form': form
     }
-    return render(request, 'detail.html', context)
+    return render(request, 'app/detail.html', context)
 
 def material(request):
     context = {
         'site': 'material'
     }
-    return render(request, 'index.html', context)
+    return render(request, 'app/index.html', context)
 
 def company(request):
     context = {
         'site': 'company'
     }
-    return render(request, 'index.html', context)
+    return render(request, 'app/index.html', context)
 
 def invoice(request):
     context = {
         'site': 'invoice'
     }
-    return render(request, 'index.html', context)
+    return render(request, 'app/index.html', context)
