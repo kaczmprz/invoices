@@ -17,7 +17,7 @@ def customer(request):
         'site': 'customer',
         'list': customer_list
     }
-    return render(request, 'app/index.html', context)
+    return render(request, 'app/customer.html', context)
 
 def customer_detail(request, id):
     _customer = Customer.objects.get(id=id)
@@ -26,22 +26,27 @@ def customer_detail(request, id):
         'site': 'customer',
         'form': form
     }
-    return render(request, 'app/detail.html', context)
+    return render(request, 'app/customer_detail.html', context)
 
 def material(request):
+    material_list = Material.objects.all()
     context = {
-        'site': 'material'
+        'site': 'material',
+        'list': material_list
     }
-    return render(request, 'app/index.html', context)
+    return render(request, 'app/material.html', context)
+
+def material_detail(request, id):
+    pass
 
 def company(request):
     context = {
         'site': 'company'
     }
-    return render(request, 'app/index.html', context)
+    return render(request, 'app/base.html', context)
 
 def invoice(request):
     context = {
         'site': 'invoice'
     }
-    return render(request, 'app/index.html', context)
+    return render(request, 'app/base.html', context)
