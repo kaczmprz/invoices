@@ -1,13 +1,22 @@
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.http import Http404
-from .models import Customer, Material, Company
+from .models import Customer, Material, Company, Invoice
 from .forms import CustomerForm
 
 # Create your views here.
 def index(request):
+    num_customers = Customer.objects.all().count()
+    num_materials = Material.objects.all().count()
+    num_companies = Company.objects.all().count()
+    num_invoices = Invoice.objects.all().count()
+
     context = {
-        'site': 'home'
+        'site': 'home',
+        'num_customers': num_customers,
+        'num_materials': num_materials,
+        'num_companies': num_companies,
+        'num_invoices': num_invoices
     }
     return render(request, 'app/index.html', context)
 
