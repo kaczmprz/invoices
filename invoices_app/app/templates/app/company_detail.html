@@ -2,13 +2,13 @@
 
 {% block content %}
 <nav>
-    <a href="{% url 'app:customer' %}"> Back to customers</a>
+    <a href="{% url 'app:company' %}"> Back to companies</a>
 </nav>
 <br>
-<h5>First name:</h5>
-    {{ item.first_name }}
-<h5>Last name:</h5>
-    {{ item.last_name }}
+<h5>Name:</h5>
+    {{ item.name }}
+<h5>Vat Id:</h5>
+    {{ item.vat_id }}
 <h5>Address:</h5>
     {{ item.address }}
 <h5>City:</h5>
@@ -18,7 +18,7 @@
 <br>
 <br>
 <nav>
-    <a href="{% url 'app:customer_form' item.id %}"> Change data</a>
+    <a href="{% url 'app:company_form' item.id %}"> Change data</a>
 </nav>
 
 {% endblock %}

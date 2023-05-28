@@ -1,0 +1,15 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<nav>
+  <a href="{% url 'app:company_detail' company_id %}"> Back to company</a>
+</nav>
+
+<form action="" method="post">
+{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

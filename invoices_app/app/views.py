@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.template import loader
 from django.http import Http404
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Customer, Material, Company, Invoice
-from .forms import CustomerForm
+from .forms import CustomerForm, MaterialForm, CompanyForm
 
 # Create your views here.
 def index(request):
@@ -28,14 +29,24 @@ def customer(request):
     }
     return render(request, 'app/customer.html', context)
 
-def customer_detail(request, id):
-    _customer = Customer.objects.get(id=id)
+def customer_detail(request, _id):
+    _customer = get_object_or_404(Customer, id=_id)
+    context = {
+        'site': 'customer',
+        'item': _customer
+    }
+    return render(request, 'app/customer_detail.html', context)
+
+def customer_form(request, _id):
+    _customer = get_object_or_404(Customer, id=_id)
     form = CustomerForm(instance=_customer)
     context = {
         'site': 'customer',
-        'form': form
+        'form': form,
+        'customer_id': _customer.id
     }
-    return render(request, 'app/customer_detail.html', context)
+    return render(request, 'app/customer_form.html', context)
+
 
 def material(request):
     material_list = Material.objects.all()
@@ -45,14 +56,49 @@ def material(request):
     }
     return render(request, 'app/material.html', context)
 
-def material_detail(request, id):
-    pass
+def material_detail(request, _id):
+    _material = get_object_or_404(Material, id=_id)
+    context = {
+        'site': 'material',
+        'item': _material
+    }
+    return render(request, 'app/material_detail.html', context)
+
+def material_form(request, _id):
+    _material = get_object_or_404(Material, id=_id)
+    form = MaterialForm(instance=_material)
+    context = {
+        'site': 'material',
+        'form': form,
+        'material_id': _material.id
+    }
+    return render(request, 'app/material_form.html', context)
 
 def company(request):
+    company_list = Company.objects.all()
     context = {
-        'site': 'company'
+        'site': 'company',
+        'list': company_list
     }
-    return render(request, 'app/base.html', context)
+    return render(request, 'app/company.html', context)
+
+def company_detail(request, _id):
+    _company = get_object_or_404(Customer, id=_id)
+    context = {
+        'site': 'company',
+        'item': _company
+    }
+    return render(request, 'app/company_detail.html', context)
+
+def company_form(request, _id):
+    _company = Company.objects.get(id=_id)
+    form = CompanyForm(instance=_company)
+    context = {
+        'site': 'company',
+        'form': form,
+        'company_id': _company.id
+    }
+    return render(request, 'app/company_form.html', context)
 
 def invoice(request):
     context = {

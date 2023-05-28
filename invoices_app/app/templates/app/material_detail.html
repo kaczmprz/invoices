@@ -1,9 +1,20 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-<form action="" method="post">
-{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit">
-</form>
+<nav>
+    <a href="{% url 'app:material' %}"> Back to materials</a>
+</nav>
+<br>
+<h5>Number:</h5>
+    {{ item.number }}
+<h5>Description:</h5>
+    {{ item.desc }}
+<h5>Category:</h5>
+    {{ item.get_category_display }}
+<br>
+<br>
+<nav>
+    <a href="{% url 'app:material_form' item.id %}"> Change data</a>
+</nav>
+
 {% endblock %}

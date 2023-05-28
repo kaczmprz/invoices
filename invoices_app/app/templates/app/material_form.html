@@ -1,0 +1,15 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<nav>
+  <a href="{% url 'app:material_detail' material_id %}"> Back to material</a>
+</nav>
+
+<form action="" method="post">
+{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}
