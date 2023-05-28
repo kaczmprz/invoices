@@ -49,7 +49,6 @@ def customer_form(request, _id):
     return render(request, 'app/customer_form.html', context)
 
 def customer_create(request):
-
     if request.method == 'POST':
         form = CustomerForm(request.POST)
         if form.is_valid():
@@ -91,6 +90,18 @@ def material_form(request, _id):
     }
     return render(request, 'app/material_form.html', context)
 
+def material_create(request):
+    if request.method == 'POST':
+        form = MaterialForm(request.POST)
+        if form.is_valid():
+            material = form.save()
+            return redirect('app:material_detail', material.id)
+    else:
+        form = MaterialForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'app/material_create.html', context)
 def company(request):
     company_list = Company.objects.all()
     context = {
@@ -116,6 +127,19 @@ def company_form(request, _id):
         'company_id': _company.id
     }
     return render(request, 'app/company_form.html', context)
+
+def company_create(request):
+    if request.method == 'POST':
+        form = CompanyForm(request.POST)
+        if form.is_valid():
+            company = form.save()
+            return redirect('app:company_detail', company.id)
+    else:
+        form = CompanyForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'app/company_create.html', context)
 
 def invoice(request):
     context = {

@@ -2,6 +2,11 @@
 
 {% block content %}
 <h1>  Welcome on {{ site }}</h1>
+
+<nav>
+  <a href="{% url 'app:material_create' %}"> Create new material</a>
+</nav>
+
 {% if list %}
 <ul>
 {% for item in list %}
