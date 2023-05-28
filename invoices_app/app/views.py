@@ -1,9 +1,10 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.template import loader
 from django.http import Http404
+from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Customer, Material, Company, Invoice
-from .forms import CustomerForm, MaterialForm, CompanyForm
+from .forms import CustomerForm, MaterialForm, CompanyForm, ContactUsForm
 
 # Create your views here.
 def index(request):
@@ -22,7 +23,7 @@ def index(request):
     return render(request, 'app/index.html', context)
 
 def customer(request):
-    customer_list = Customer.objects.order_by("-last_name")[:5]
+    customer_list = Customer.objects.order_by("-last_name")
     context = {
         'site': 'customer',
         'list': customer_list
@@ -46,6 +47,22 @@ def customer_form(request, _id):
         'customer_id': _customer.id
     }
     return render(request, 'app/customer_form.html', context)
+
+def customer_create(request):
+
+    if request.method == 'POST':
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            customer = form.save()
+            return redirect('app:customer_detail', customer.id)
+    else:
+        form = CustomerForm()
+
+    context = {
+        'site': 'customer',
+        'form': form,
+    }
+    return render(request, 'app/customer_create.html', context)
 
 
 def material(request):
@@ -105,3 +122,22 @@ def invoice(request):
         'site': 'invoice'
     }
     return render(request, 'app/base.html', context)
+
+
+def contact_us(request):
+    if request.method == 'POST':
+        form = ContactUsForm(request.POST)
+        if form.is_valid():
+            send_mail(
+                subject=f'Message from {form.cleaned_data["name"]}',
+                message=form.cleaned_data['message'],
+                from_email=form.cleaned_data['email'],
+                recipient_list=['admin@dupa.com']
+            )
+        return redirect('/email_sent')
+    else:
+        form = ContactUsForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'app/contact_us.html', context=context)

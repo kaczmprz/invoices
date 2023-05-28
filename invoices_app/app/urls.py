@@ -7,6 +7,7 @@ urlpatterns = [
     path('index', views.index, name='index'),
 
     path('customer/', views.customer, name='customer'),
+    path('customer/create', views.customer_create, name='customer_create'),
     path('customer/<int:_id>/change/', views.customer_form, name='customer_form'),
     path('customer/<int:_id>/', views.customer_detail, name='customer_detail'),
 
@@ -19,4 +20,7 @@ urlpatterns = [
     path('company/<int:_id>/change/', views.company_form, name='company_form'),
 
     path('invoice/', views.invoice, name='invoice'),
+
+    path('contact_us', views.contact_us, name='contact_us'),
+    path('email_sent', views.index, name='email_sent')
 ]
