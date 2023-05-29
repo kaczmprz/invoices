@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from django.template import loader
 from django.http import Http404
 from django.core.mail import send_mail
@@ -14,7 +15,6 @@ def index(request):
     num_invoices = Invoice.objects.all().count()
 
     context = {
-        'site': 'home',
         'num_customers': num_customers,
         'num_materials': num_materials,
         'num_companies': num_companies,
@@ -25,7 +25,6 @@ def index(request):
 def customer(request):
     customer_list = Customer.objects.order_by("-last_name")
     context = {
-        'site': 'customer',
         'list': customer_list
     }
     return render(request, 'app/customer.html', context)
@@ -33,20 +32,27 @@ def customer(request):
 def customer_detail(request, _id):
     _customer = get_object_or_404(Customer, id=_id)
     context = {
-        'site': 'customer',
         'item': _customer
     }
     return render(request, 'app/customer_detail.html', context)
 
-def customer_form(request, _id):
+def customer_update(request, _id):
     _customer = get_object_or_404(Customer, id=_id)
-    form = CustomerForm(instance=_customer)
+    if request.method == 'POST':
+        form = CustomerForm(request.POST, instance=_customer)
+        if form.is_valid():
+            form.save()
+            return redirect('app:customer_detail', _customer.id)
+        else:
+            messages.warning(request, 'Something went wrong', extra_tags='alert')
+    else:
+        form = CustomerForm(instance=_customer)
+
     context = {
-        'site': 'customer',
         'form': form,
         'customer_id': _customer.id
     }
-    return render(request, 'app/customer_form.html', context)
+    return render(request, 'app/customer_update.html', context)
 
 def customer_create(request):
     if request.method == 'POST':
@@ -58,16 +64,26 @@ def customer_create(request):
         form = CustomerForm()
 
     context = {
-        'site': 'customer',
         'form': form,
     }
     return render(request, 'app/customer_create.html', context)
+
+def customer_delete(request, _id):
+    _customer = get_object_or_404(Customer, id=_id)
+    if request.method == 'POST':
+        _customer.delete()
+        messages.success(request, 'Customer was deleted successfully!')
+        return redirect('app:customer')
+
+    context = {
+        'customer': _customer,
+    }
+    return render(request, 'app/customer_delete.html', context)
 
 
 def material(request):
     material_list = Material.objects.all()
     context = {
-        'site': 'material',
         'list': material_list
     }
     return render(request, 'app/material.html', context)
@@ -75,20 +91,24 @@ def material(request):
 def material_detail(request, _id):
     _material = get_object_or_404(Material, id=_id)
     context = {
-        'site': 'material',
         'item': _material
     }
     return render(request, 'app/material_detail.html', context)
 
-def material_form(request, _id):
+def material_update(request, _id):
     _material = get_object_or_404(Material, id=_id)
-    form = MaterialForm(instance=_material)
+    if request.method == 'POST':
+        form = MaterialForm(request.POST, instance=_material)
+        if form.is_valid():
+            form.save()
+            return redirect('app:material_detail', _material.id)
+    else:
+        form = MaterialForm(instance=_material)
     context = {
-        'site': 'material',
         'form': form,
         'material_id': _material.id
     }
-    return render(request, 'app/material_form.html', context)
+    return render(request, 'app/material_update.html', context)
 
 def material_create(request):
     if request.method == 'POST':
@@ -102,31 +122,47 @@ def material_create(request):
         'form': form
     }
     return render(request, 'app/material_create.html', context)
+
+
+def material_delete(request, _id):
+    _material = get_object_or_404(Material, id=_id)
+    if request.method == 'POST':
+        _material.delete()
+        return redirect('app:material')
+    context = {
+        'material': _material,
+    }
+    return render(request, 'app/material_delete.html', context)
+
+
 def company(request):
     company_list = Company.objects.all()
     context = {
-        'site': 'company',
         'list': company_list
     }
     return render(request, 'app/company.html', context)
 
 def company_detail(request, _id):
-    _company = get_object_or_404(Customer, id=_id)
+    _company = get_object_or_404(Company, id=_id)
     context = {
-        'site': 'company',
         'item': _company
     }
     return render(request, 'app/company_detail.html', context)
 
-def company_form(request, _id):
+def company_update(request, _id):
     _company = Company.objects.get(id=_id)
-    form = CompanyForm(instance=_company)
+    if request.method == 'POST':
+        form = CompanyForm(request.POST, instance=_company)
+        if form.is_valid():
+            form.save()
+            return redirect('app:company_detail', _company.id)
+    else:
+        form = CompanyForm(instance=_company)
     context = {
-        'site': 'company',
         'form': form,
         'company_id': _company.id
     }
-    return render(request, 'app/company_form.html', context)
+    return render(request, 'app/company_update.html', context)
 
 def company_create(request):
     if request.method == 'POST':
@@ -140,6 +176,16 @@ def company_create(request):
         'form': form
     }
     return render(request, 'app/company_create.html', context)
+
+def company_delete(request, _id):
+    _company = get_object_or_404(Company, id=_id)
+    if request.method == 'POST':
+        _company.delete()
+        return redirect('app:company')
+    context = {
+        'company': _company
+    }
+    return render(request, 'app/company_delete.html', context)
 
 def invoice(request):
     context = {

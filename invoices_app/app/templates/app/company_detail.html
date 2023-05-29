@@ -7,18 +7,23 @@
 <br>
 <h5>Name:</h5>
     {{ item.name }}
+<br></br>
 <h5>Vat Id:</h5>
     {{ item.vat_id }}
+<br></br>
 <h5>Address:</h5>
     {{ item.address }}
+<br></br>
 <h5>City:</h5>
     {{ item.city }}
+<br></br>
 <h5>Country:</h5>
     {{ item.country }}
-<br>
-<br>
+<br></br>
+<br></br>
 <nav>
-    <a href="{% url 'app:company_form' item.id %}"> Change data</a>
+    <a href="{% url 'app:company_update' item.id %}"> Edit</a>
+    <a href="{% url 'app:company_delete' item.id %}"> Delete</a>
 </nav>
 
 {% endblock %}

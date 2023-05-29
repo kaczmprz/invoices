@@ -1,0 +1,27 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<h1>Delete data</h1>
+
+<p>Are you sure you want to delete this customer?: {{ customer.first_name }} {{ customer.last_name }}</p>
+
+<form action="" method="post">
+{% csrf_token %}
+<input type="submit" value="Delete">
+</form>
+
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
+<br></br>
+<nav>
+  <a href="{% url 'app:customer_detail' customer.id %}">Back to customer</a>
+</nav>
+
+{% endblock %}

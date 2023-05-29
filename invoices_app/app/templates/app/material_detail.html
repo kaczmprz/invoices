@@ -7,14 +7,17 @@
 <br>
 <h5>Number:</h5>
     {{ item.number }}
+<br></br>
 <h5>Description:</h5>
     {{ item.desc }}
+<br></br>
 <h5>Category:</h5>
     {{ item.get_category_display }}
-<br>
-<br>
+<br></br>
+<br></br>
 <nav>
-    <a href="{% url 'app:material_form' item.id %}"> Change data</a>
+    <a href="{% url 'app:material_update' item.id %}"> Edit</a>
+    <a href="{% url 'app:material_delete' item.id %}"> Delete</a>
 </nav>
 
 {% endblock %}

@@ -4,6 +4,9 @@
     {% block title %}
       <title>Fakturownia</title>
     {% endblock %}
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link
@@ -16,6 +19,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
   </head>
   <body>
+    {% include 'app/messages.html' %}
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-2">
