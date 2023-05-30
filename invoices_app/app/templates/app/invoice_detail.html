@@ -1,0 +1,38 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+<nav>
+    <a href="{% url 'app:invoice' %}"> Back to invoices</a>
+</nav>
+<br>
+<h5>Number:</h5>
+    {{ item.number }}
+<br></br>
+<h5>Sales date:</h5>
+    {{ item.sales_date }}
+<br></br>
+<h5>Payment date:</h5>
+    {{ item.payment_date }}
+<br></br>
+<h5>Type:</h5>
+    {{ item.type }}
+<br></br>
+<h5>Customer:</h5>
+    {{ item.customer }}
+<br></br>
+<h5>Company:</h5>
+    {{ item.company }}
+<br></br>
+<h5>Materials:</h5>
+    {% for material in item.material.all %}
+      {{ material }}
+    <br>
+    {% endfor %}
+<br></br>
+<br></br>
+<nav>
+    <a href="{% url 'app:invoice_update' item.id %}"> Edit</a>
+    <a href="{% url 'app:invoice_delete' item.id %}"> Delete</a>
+</nav>
+
+{% endblock %}

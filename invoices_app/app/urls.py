@@ -25,6 +25,10 @@ urlpatterns = [
     path('company/<int:_id>/delete/', views.company_delete, name='company_delete'),
 
     path('invoice/', views.invoice, name='invoice'),
+    path('invoice/create', views.invoice_create, name='invoice_create'),
+    path('invoice/<int:_id>/', views.invoice_detail, name='invoice_detail'),
+    path('invoice/<int:_id>/change/', views.invoice_update, name='invoice_update'),
+    path('invoice/<int:_id>/delete/', views.invoice_delete, name='invoice_delete'),
 
     path('contact_us', views.contact_us, name='contact_us'),
     path('email_sent', views.index, name='email_sent')

@@ -1,7 +1,12 @@
 from django.db import models
-
+from django.utils.translation import gettext as _
+from model_utils import Choices
 # Create your models here.
 class Customer(models.Model):
+
+    class Meta:
+        verbose_name_plural = _('Customers')
+
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
@@ -13,6 +18,10 @@ class Customer(models.Model):
 
 
 class Company(models.Model):
+
+    class Meta:
+        verbose_name_plural = _('Companies')
+
     name = models.CharField(max_length=50)
     vat_id = models.CharField(max_length=10)
     address = models.CharField(max_length=50)
@@ -23,6 +32,10 @@ class Company(models.Model):
         return self.name
 
 class Material(models.Model):
+
+    class Meta:
+        verbose_name_plural = _('Materials')
+
     class Category(models.TextChoices):
         FOOD = 'FO'
         BEVERAGES = 'BG'
@@ -38,11 +51,22 @@ class Material(models.Model):
 
 
 class Invoice(models.Model):
+
+    class Meta:
+        verbose_name_plural = _('Invoices')
+
+    TYPE = Choices(
+        ('INVOICE', _('Invoice')),
+        ('PROFORMA', _('Proforma invoice')),
+    )
+
     number = models.IntegerField()
-    sale_date = models.DateField()
+    sales_date = models.DateField()
     payment_date = models.DateField()
-    seller = models.ForeignKey(Company, null=True, on_delete=models.SET_NULL)
-    buyer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    type = models.CharField(_('status'), choices=TYPE, default=TYPE.INVOICE, max_length=20)
+    customer = models.ForeignKey(Company, null=True, on_delete=models.SET_NULL)
+    company = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    material = models.ManyToManyField(Material)
 
     def __str__(self):
         return str(self.number)

@@ -23,8 +23,8 @@ class MaterialAdmin(admin.ModelAdmin):
 class InvoiceAdmin(admin.ModelAdmin):
     list_display = (
         'number',
-        'seller',
-        'buyer'
+        'customer',
+        'company'
     )
 
 admin.site.register(Customer, CustomerAdmin)

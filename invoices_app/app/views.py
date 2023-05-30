@@ -5,7 +5,7 @@ from django.http import Http404
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Customer, Material, Company, Invoice
-from .forms import CustomerForm, MaterialForm, CompanyForm, ContactUsForm
+from .forms import CustomerForm, MaterialForm, CompanyForm, ContactUsForm, InvoiceForm
 
 # Create your views here.
 def index(request):
@@ -42,9 +42,10 @@ def customer_update(request, _id):
         form = CustomerForm(request.POST, instance=_customer)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Customer was updated successfully!')
             return redirect('app:customer_detail', _customer.id)
         else:
-            messages.warning(request, 'Something went wrong', extra_tags='alert')
+            messages.warning(request, 'Something went wrong')
     else:
         form = CustomerForm(instance=_customer)
 
@@ -59,10 +60,12 @@ def customer_create(request):
         form = CustomerForm(request.POST)
         if form.is_valid():
             customer = form.save()
+            messages.success(request, 'Customer was created successfully!')
             return redirect('app:customer_detail', customer.id)
+        else:
+            messages.warning(request, 'Something went wrong')
     else:
         form = CustomerForm()
-
     context = {
         'form': form,
     }
@@ -74,7 +77,6 @@ def customer_delete(request, _id):
         _customer.delete()
         messages.success(request, 'Customer was deleted successfully!')
         return redirect('app:customer')
-
     context = {
         'customer': _customer,
     }
@@ -101,7 +103,10 @@ def material_update(request, _id):
         form = MaterialForm(request.POST, instance=_material)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Material was updated successfully!')
             return redirect('app:material_detail', _material.id)
+        else:
+            messages.warning(request, 'Something went wrong')
     else:
         form = MaterialForm(instance=_material)
     context = {
@@ -115,7 +120,10 @@ def material_create(request):
         form = MaterialForm(request.POST)
         if form.is_valid():
             material = form.save()
+            messages.success(request, 'Customer was created successfully!')
             return redirect('app:material_detail', material.id)
+        else:
+            messages.warning(request, 'Something went wrong')
     else:
         form = MaterialForm()
     context = {
@@ -128,6 +136,7 @@ def material_delete(request, _id):
     _material = get_object_or_404(Material, id=_id)
     if request.method == 'POST':
         _material.delete()
+        messages.success(request, 'Material was deleted successfully!')
         return redirect('app:material')
     context = {
         'material': _material,
@@ -155,7 +164,10 @@ def company_update(request, _id):
         form = CompanyForm(request.POST, instance=_company)
         if form.is_valid():
             form.save()
+            messages.success(request, 'Company was updated successfully!')
             return redirect('app:company_detail', _company.id)
+        else:
+            messages.warning(request, 'Something went wrong')
     else:
         form = CompanyForm(instance=_company)
     context = {
@@ -169,7 +181,10 @@ def company_create(request):
         form = CompanyForm(request.POST)
         if form.is_valid():
             company = form.save()
+            messages.success(request, 'Company was created successfully!')
             return redirect('app:company_detail', company.id)
+        else:
+            messages.warning(request, 'Something went wrong')
     else:
         form = CompanyForm()
     context = {
@@ -181,6 +196,7 @@ def company_delete(request, _id):
     _company = get_object_or_404(Company, id=_id)
     if request.method == 'POST':
         _company.delete()
+        messages.success(request, 'Company was deleted successfully!')
         return redirect('app:company')
     context = {
         'company': _company
@@ -188,11 +204,55 @@ def company_delete(request, _id):
     return render(request, 'app/company_delete.html', context)
 
 def invoice(request):
+    invoice_list = Invoice.objects.all()
     context = {
-        'site': 'invoice'
+        'list': invoice_list
     }
-    return render(request, 'app/base.html', context)
+    return render(request, 'app/invoice.html', context)
 
+def invoice_detail(request, _id):
+    _invoice = get_object_or_404(Invoice, id=_id)
+    context = {
+        'item': _invoice
+    }
+    return render(request, 'app/invoice_detail.html', context)
+
+def invoice_create(request):
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            invoice = form.save()
+            messages.success(request, 'Invoice was created successfully!')
+            return redirect('app:invoice_detail', invoice.id)
+        else:
+            messages.warning(request, 'Something went wrong')
+    else:
+        form = InvoiceForm()
+    context = {
+        'form': form
+    }
+    return render(request, 'app/invoice_create.html', context)
+
+def invoice_update(request, _id):
+    _invoice = get_object_or_404(Invoice, id=_id)
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST, instance=_invoice)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Invoice was updated successfully!')
+            return redirect('app:invoice_detail', _invoice.id)
+        else:
+            messages.warning(request, 'Something went wrong')
+    else:
+        form = InvoiceForm(instance=_invoice)
+    context = {
+        'form': form,
+        'invoice_id': _invoice.id
+    }
+    return render(request, 'app/invoice_update.html', context=context)
+
+def invoice_delete(request):
+    pass
 
 def contact_us(request):
     if request.method == 'POST':
