@@ -33,6 +33,7 @@
 <nav>
     <a href="{% url 'app:invoice_update' item.id %}"> Edit</a>
     <a href="{% url 'app:invoice_delete' item.id %}"> Delete</a>
+    <a href="{% url 'app:invoice_generate' item.id %}"> Get pdf</a>
 </nav>
 
 {% endblock %}

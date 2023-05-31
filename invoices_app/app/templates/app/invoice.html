@@ -1,7 +1,7 @@
 {% extends 'app/base.html' %}
 
 {% block content %}
-<h1> Welcome on invoices</h1>
+<h1>  Welcome on invoices</h1>
 
 <nav>
   <a href="{% url 'app:invoice_create' %}"> Create new invoice</a>
@@ -10,7 +10,7 @@
 {% if list %}
 <ul>
 {% for item in list %}
-  <li><a href="{% url 'app:invoice_detail' item.id %}">{{ item.number }} </a></li>
+  <li><a href="{% url 'app:invoice_detail' item.id %}">{{ item.number }}</a></li>
 {% endfor %}
 </ul>
 {% else %}

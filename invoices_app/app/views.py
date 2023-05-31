@@ -1,11 +1,14 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.template import loader
-from django.http import Http404
+from django.http import Http404, FileResponse
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Customer, Material, Company, Invoice
 from .forms import CustomerForm, MaterialForm, CompanyForm, ContactUsForm, InvoiceForm
+from reportlab.pdfgen import canvas
+
+import io
 
 # Create your views here.
 def index(request):
@@ -251,8 +254,21 @@ def invoice_update(request, _id):
     }
     return render(request, 'app/invoice_update.html', context=context)
 
-def invoice_delete(request):
-    pass
+
+def invoice_generate_pdf(request, _id):
+    return render(request, 'app/pdf.html')
+
+
+def invoice_delete(request, _id):
+    _invoice = get_object_or_404(Invoice, id=_id)
+    if request.method == 'POST':
+        _invoice.delete()
+        messages.success(request, 'Invoice was deleted successfully!')
+        return redirect('app:invoice')
+    context = {
+        'invoice': _invoice
+    }
+    return render(request, 'app/invoice_delete.html', context)
 
 def contact_us(request):
     if request.method == 'POST':
