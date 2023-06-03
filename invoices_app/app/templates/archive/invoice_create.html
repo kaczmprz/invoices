@@ -1,0 +1,17 @@
+{% extends 'app/base.html' %}
+
+{% block content %}
+
+<h1>Create new invoice</h1>
+
+<nav>
+  <a href="{% url 'app:invoice' %}"> Back to invoices</a>
+</nav>
+
+<form action="" method="post">
+{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Submit">
+</form>
+
+{% endblock %}

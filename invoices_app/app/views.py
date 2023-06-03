@@ -4,8 +4,8 @@ from django.template import loader
 from django.http import Http404, FileResponse
 from django.core.mail import send_mail
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Customer, Material, Company, Invoice
-from .forms import CustomerForm, MaterialForm, CompanyForm, ContactUsForm, InvoiceForm
+from .models import Customer, Material, Company, Invoice, Order
+from .forms import CustomerForm, MaterialForm, CompanyForm, ContactUsForm, InvoiceForm, OrderFormSet
 from reportlab.pdfgen import canvas
 
 import io
@@ -220,6 +220,7 @@ def invoice_detail(request, _id):
     }
     return render(request, 'app/invoice_detail.html', context)
 
+'''
 def invoice_create(request):
     if request.method == 'POST':
         form = InvoiceForm(request.POST)
@@ -233,6 +234,28 @@ def invoice_create(request):
         form = InvoiceForm()
     context = {
         'form': form
+    }
+    return render(request, 'app/invoice_create.html', context)
+'''
+
+def invoice_create(request):
+    invoice = Invoice()
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST, instance=invoice)
+        formset = OrderFormSet(request.POST, instance=invoice, prefix='children')
+        if form.is_valid() and formset.is_valid():
+            invoice = form.save()
+            formset.save()
+            messages.success(request, 'Invoice was created successfully!')
+            return redirect('app:invoice_detail', invoice.id)
+        else:
+            messages.warning(request, 'Something went wrong')
+    else:
+        form = InvoiceForm(instance=invoice)
+        formset = OrderFormSet(instance=invoice, prefix='children')
+    context = {
+        'form': form,
+        'formset': formset
     }
     return render(request, 'app/invoice_create.html', context)
 
@@ -291,3 +314,4 @@ def contact_us(request):
         'form': form
     }
     return render(request, 'app/contact_us.html', context=context)
+

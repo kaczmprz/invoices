@@ -23,8 +23,14 @@
 <h5>Company:</h5>
     {{ item.company }}
 <br></br>
-<h5>Orders:</h5>
-    {% for order in item.orderedmaterial.all %}
+<h5>Materials:</h5>
+    {% for material in item.material.all %}
+      {{ material }}
+    <br>
+    {% endfor %}
+<br></br>
+<h5>Ordered Materials:</h5>
+    {% for orderedmaterial in item.orderedmaterial.all %}
       {{ orderedmaterial }}
     <br>
     {% endfor %}

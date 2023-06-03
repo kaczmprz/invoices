@@ -32,10 +32,8 @@ class Company(models.Model):
         return self.name
 
 class Material(models.Model):
-
     class Meta:
         verbose_name_plural = _('Materials')
-
     class Category(models.TextChoices):
         FOOD = 'FO'
         BEVERAGES = 'BG'
@@ -46,11 +44,9 @@ class Material(models.Model):
     desc = models.CharField(max_length=100)
     category = models.CharField(choices=Category.choices, max_length=4, default='ND')
     price = models.FloatField()
-    quantity = models.IntegerField(default=0)
 
     def __str__(self):
         return self.desc
-
 
 class Invoice(models.Model):
 
@@ -74,10 +70,20 @@ class Invoice(models.Model):
     type = models.CharField(_('type'), choices=TYPE, default=TYPE.INVOICE, max_length=20)
     customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
     company = models.ForeignKey(Company, null=True, on_delete=models.SET_NULL)
-    material = models.ManyToManyField(Material)
+    #material = models.ManyToManyField(Material)
+    #order = models.ForeignKey(Order, on_delete=models.DO_NOTHING)
 
     def __str__(self):
         return str(self.number)
 
-    def pdf(self):
-        pass
+
+class Order(models.Model):
+    material = models.ForeignKey(Material, null=True, on_delete=models.SET_NULL)
+    invoice = models.ForeignKey(Invoice, on_delete=models.DO_NOTHING)
+    quantity = models.IntegerField(default=1)
+
+    def __str__(self):
+        return str(self.invoice.id)
+
+    def get_total_item_price(self):
+        return self.quantity * self.material.price
