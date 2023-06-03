@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>A simple, clean, and responsive HTML invoice template</title>
+		<title>Invoice</title>
 
 		<style>
 			.invoice-box {
@@ -107,13 +107,14 @@
 						<table>
 							<tr>
 								<td class="title">
-									<img src="https://www.sparksuite.com/images/logo.png" style="width: 100%; max-width: 300px" />
+									{% load static %} <img src="{% static "app/f_letter.png" %}" alt="logo">
 								</td>
 
 								<td>
-									Invoice #: 123<br />
-									Created: January 1, 2015<br />
-									Due: February 1, 2015
+									Invoice #: {{ invoice.number }}<br />
+									Type : {{ invoice.get_type_display }}<br />
+									Sales date: {{ invoice.sales_date }} <br />
+									Payment date : {{ invoice.payment_date }}
 								</td>
 							</tr>
 						</table>
@@ -125,15 +126,16 @@
 						<table>
 							<tr>
 								<td>
-									Sparksuite, Inc.<br />
-									12345 Sunny Road<br />
-									Sunnyville, CA 12345
+									{{ invoice.company.name }} <br />
+									NIP: {{ invoice.company.vat_id}}<br />
+									{{ invoice.company.address}}, {{ invoice.company.city}}<br />
+									{{ invoice.company.country }} <br />
 								</td>
 
 								<td>
-									Acme Corp.<br />
-									John Doe<br />
-									john@example.com
+									{{ invoice.customer.first_name }} {{ invoice.customer.last_name }}<br />
+									{{ invoice.customer.address }}, {{ invoice.customer.city }}<br />
+									{{ invoice.customer.country }}<br />
 								</td>
 							</tr>
 						</table>
@@ -143,7 +145,7 @@
 				<tr class="heading">
 					<td>Payment Method</td>
 
-					<td>Check #</td>
+					<td>{{ invoice.get_payment_method_display }}</td>
 				</tr>
 
 				<tr class="details">
@@ -154,27 +156,20 @@
 
 				<tr class="heading">
 					<td>Item</td>
-
+					<td>Quantity</td>
 					<td>Price</td>
+					<td>Price total</td>
 				</tr>
 
+				{% for material in invoice.material.all %}
 				<tr class="item">
-					<td>Website design</td>
-
-					<td>$300.00</td>
+					<td> {{ material.desc }}</td>
+					<td> {{ material.quantity }}</td>
+					<td>$ {{ material.price }}</td>
+					<td>$ {{ material.price }}</td>
 				</tr>
+				{% endfor %}
 
-				<tr class="item">
-					<td>Hosting (3 months)</td>
-
-					<td>$75.00</td>
-				</tr>
-
-				<tr class="item last">
-					<td>Domain name (1 year)</td>
-
-					<td>$10.00</td>
-				</tr>
 
 				<tr class="total">
 					<td></td>

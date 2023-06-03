@@ -45,6 +45,8 @@ class Material(models.Model):
     number = models.IntegerField()
     desc = models.CharField(max_length=100)
     category = models.CharField(choices=Category.choices, max_length=4, default='ND')
+    price = models.FloatField()
+    quantity = models.IntegerField(default=0)
 
     def __str__(self):
         return self.desc
@@ -60,12 +62,18 @@ class Invoice(models.Model):
         ('PROFORMA', _('Proforma invoice')),
     )
 
+    PAYMENT_METHOD = Choices(
+        ('CASH', _('Cash')),
+        ('BANK_TRANSFER', _('Bank transfer')),
+    )
+
     number = models.IntegerField()
     sales_date = models.DateField()
     payment_date = models.DateField()
-    type = models.CharField(_('status'), choices=TYPE, default=TYPE.INVOICE, max_length=20)
-    customer = models.ForeignKey(Company, null=True, on_delete=models.SET_NULL)
-    company = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    payment_method = models.CharField(_('payment_method'), choices=PAYMENT_METHOD, default=PAYMENT_METHOD.CASH, max_length=20)
+    type = models.CharField(_('type'), choices=TYPE, default=TYPE.INVOICE, max_length=20)
+    customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
+    company = models.ForeignKey(Company, null=True, on_delete=models.SET_NULL)
     material = models.ManyToManyField(Material)
 
     def __str__(self):

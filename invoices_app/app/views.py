@@ -256,7 +256,11 @@ def invoice_update(request, _id):
 
 
 def invoice_generate_pdf(request, _id):
-    return render(request, 'app/pdf.html')
+    _invoice = get_object_or_404(Invoice, id=_id)
+    context = {
+        'invoice': _invoice
+    }
+    return render(request, 'app/pdf.html', context)
 
 
 def invoice_delete(request, _id):
