@@ -10,7 +10,7 @@
 {% if list %}
 <ul>
 {% for item in list %}
-  <li><a href="{% url 'app:material_detail' item.id %}">{{ item.number }} {{ item.desc }}</a></li>
+  <li><a href="{% url 'app:material_detail' item.id %}">{{ item.desc }}</a></li>
 {% endfor %}
 </ul>
 {% else %}

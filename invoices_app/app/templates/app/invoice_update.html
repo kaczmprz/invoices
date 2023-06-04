@@ -1,15 +1,42 @@
 {% extends 'app/base.html' %}
-
+{% load static %}
 {% block content %}
 
 <nav>
   <a href="{% url 'app:invoice_detail' invoice_id %}"> Back to invoices</a>
 </nav>
 
-<form action="" method="post">
-{% csrf_token %}
+<div class="col-md-4">
+  <form id="myForm" method="post" action="">
+    {% csrf_token %}
     {{ form.as_p }}
+      <table border="0" cellpadding="0" cellspacing="0">
+          <tbody>
+              {% for form in formset.forms %}
+                  {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                  {% endfor %}
+              <tr>
+                 <td>
+                    {% if form.instance.pk %}{{ form.DELETE }}{% endif %}
+                    {{ form.material }}
+                 </td>
+                 <td>{{ form.quantity }}</td>
+              </tr>
+              {% endfor %}
+          </tbody>
+      </table>
+      {{ formset.management_form }}
     <input type="submit" value="Submit">
-</form>
-
+  </form>
+</div>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="{% static 'app/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $(function() {
+        $('#myForm tbody tr').formset({
+            prefix: '{{ formset.prefix }}'
+        });
+    })
+</script>
 {% endblock %}

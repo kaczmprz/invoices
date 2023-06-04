@@ -103,7 +103,7 @@
 		<div class="invoice-box">
 			<table cellpadding="0" cellspacing="0">
 				<tr class="top">
-					<td colspan="2">
+					<td colspan="4">
 						<table>
 							<tr>
 								<td class="title">
@@ -122,7 +122,7 @@
 				</tr>
 
 				<tr class="information">
-					<td colspan="2">
+					<td colspan="4">
 						<table>
 							<tr>
 								<td>
@@ -131,7 +131,6 @@
 									{{ invoice.company.address}}, {{ invoice.company.city}}<br />
 									{{ invoice.company.country }} <br />
 								</td>
-
 								<td>
 									{{ invoice.customer.first_name }} {{ invoice.customer.last_name }}<br />
 									{{ invoice.customer.address }}, {{ invoice.customer.city }}<br />
@@ -144,14 +143,9 @@
 
 				<tr class="heading">
 					<td>Payment Method</td>
-
+					<td></td>
+					<td></td>
 					<td>{{ invoice.get_payment_method_display }}</td>
-				</tr>
-
-				<tr class="details">
-					<td>Check</td>
-
-					<td>1000</td>
 				</tr>
 
 				<tr class="heading">
@@ -161,20 +155,21 @@
 					<td>Price total</td>
 				</tr>
 
-				{% for material in invoice.material.all %}
+				{% for order in invoice.order_set.all %}
 				<tr class="item">
-					<td> {{ material.desc }}</td>
-					<td> {{ material.quantity }}</td>
-					<td>$ {{ material.price }}</td>
-					<td>$ {{ material.price }}</td>
+					<td>{{ order.material.desc }}</td>
+					<td>{{ order.quantity }}</td>
+					<td>{{ order.material.price }}</td>
+					<td>{{ order.get_total_item_price }}</td>
 				</tr>
 				{% endfor %}
 
 
 				<tr class="total">
+					<td>Total: </td>
 					<td></td>
-
-					<td>Total: $385.00</td>
+					<td></td>
+					<td>{{ invoice.get_total_price }}</td>
 				</tr>
 			</table>
 		</div>

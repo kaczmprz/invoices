@@ -34,7 +34,7 @@ class InvoiceForm(forms.ModelForm):
    )
 '''
 
-OrderFormSet = inlineformset_factory(Invoice, Order, form=OrderForm, extra=1)
+OrderFormSet = inlineformset_factory(Invoice, Order, form=OrderForm)
 
 class ContactUsForm(forms.Form):
     name = forms.CharField(required=False)

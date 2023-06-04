@@ -23,11 +23,21 @@
 <h5>Company:</h5>
     {{ item.company }}
 <br></br>
-<h5>Orders:</h5>
-    {% for order in item.orderedmaterial.all %}
-      {{ orderedmaterial }}
-    <br>
+<h5>Order:</h5>
+    <table>
+        <tr>
+            <th>Material</th>
+            <th>Description</th>
+            <th>Quantity</th>
+        </tr>
+    {% for order in item.order_set.all %}
+        <tr>
+          <td>{{ order.material.number }}</td>
+          <td>{{ order.material.desc }}</td>
+          <td>{{ order.quantity }}</td>
+        </tr>
     {% endfor %}
+    </table>
 <br></br>
 <nav>
     <a href="{% url 'app:invoice_update' item.id %}"> Edit</a>

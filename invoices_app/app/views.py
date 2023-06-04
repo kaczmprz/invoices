@@ -259,6 +259,7 @@ def invoice_create(request):
     }
     return render(request, 'app/invoice_create.html', context)
 
+'''
 def invoice_update(request, _id):
     _invoice = get_object_or_404(Invoice, id=_id)
     if request.method == 'POST':
@@ -276,7 +277,29 @@ def invoice_update(request, _id):
         'invoice_id': _invoice.id
     }
     return render(request, 'app/invoice_update.html', context=context)
-
+'''
+def invoice_update(request, _id):
+    _invoice = get_object_or_404(Invoice, id=_id)
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST, instance=_invoice)
+        formset = OrderFormSet(request.POST, instance=_invoice, prefix='children')
+        print(formset.errors)
+        if form.is_valid() and formset.is_valid():
+            invoice = form.save()
+            formset.save()
+            messages.success(request, 'Invoice was updated successfully!')
+            return redirect('app:invoice_detail', _invoice.id)
+        else:
+            messages.warning(request, 'Something went wrong')
+    else:
+        form = InvoiceForm(instance=_invoice)
+        formset = OrderFormSet(instance=_invoice, prefix='children')
+    context = {
+        'form': form,
+        'formset': formset,
+        'invoice_id': _invoice.id
+    }
+    return render(request, 'app/invoice_update.html', context=context)
 
 def invoice_generate_pdf(request, _id):
     _invoice = get_object_or_404(Invoice, id=_id)
