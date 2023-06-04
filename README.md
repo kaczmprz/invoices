@@ -46,6 +46,7 @@ On the backend you can you simple rest api to list above objects.
    
 ## Screenshots
 1. Home view
+![obraz](https://github.com/kaczmprz/invoices/assets/111633053/d92abfc8-9f65-4ab5-bf95-c9213c1931f4)
 
 2. Customers view (Materials and Companies view are similar)
 
