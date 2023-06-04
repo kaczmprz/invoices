@@ -2,7 +2,7 @@
 
 This project is a simple app to manage create and manage settlements with various vendors.
 On the frontend you can create customers, companies, materialas and invoices.
-On the backend you can you simple rest api to list above objects. 
+On the backend you can use simple rest api to list above objects. 
 
 
 ## Prerequisities
