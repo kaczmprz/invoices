@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'app',
     'bootstrap5',
+    'django.contrib.admindocs',
 ]
 
 MIDDLEWARE = [
