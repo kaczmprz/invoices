@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from . import views
 
 app_name = 'app'
@@ -32,5 +32,6 @@ urlpatterns = [
     path('invoice/<int:_id>/generate/', views.invoice_generate_pdf, name='invoice_generate'),
 
     path('contact_us', views.contact_us, name='contact_us'),
-    path('email_sent', views.index, name='email_sent')
+    path('email_sent', views.index, name='email_sent'),
+
 ]
